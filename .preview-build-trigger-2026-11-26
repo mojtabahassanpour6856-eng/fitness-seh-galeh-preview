@@ -1,3 +1,4 @@
-Isolated preview refresh for visible registration status fix.
+Isolated preview refresh for registration feedback mount fix.
 Source: fitness-seh-galeh-test staging/recovery-ui-safe-webp-2026-11-26
-Commit: b571567a9db577c2e08b9e7b25504d222d12ede4
+Source index commit: 2cce6ca46e0c8485f81b9d96d6e859b05d470e0e
+Source safety-test commit: 64a39e6a4b42322d4c935bd4eec2e859c6c43ca1
