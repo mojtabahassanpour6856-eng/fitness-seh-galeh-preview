@@ -1,2 +1,3 @@
-Isolated preview refresh for registration form confirmation fix.
+Isolated preview refresh for visible registration status fix.
 Source: fitness-seh-galeh-test staging/recovery-ui-safe-webp-2026-11-26
+Commit: b571567a9db577c2e08b9e7b25504d222d12ede4
