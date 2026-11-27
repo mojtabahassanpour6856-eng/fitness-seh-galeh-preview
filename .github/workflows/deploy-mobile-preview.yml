@@ -29,6 +29,19 @@ jobs:
           path: site
           persist-credentials: false
 
+      - name: Checkout anatomy prototype source
+        uses: actions/checkout@v4
+        with:
+          repository: mojtabahassanpour6856-eng/fitness-seh-galeh-test
+          ref: experiment/anatomy-v2-chest-deltoid-preview-20261127
+          path: anatomy-source
+          persist-credentials: false
+
+      - name: Add anatomy preview without changing the existing preview
+        run: |
+          mkdir -p site/anatomy
+          cp -R anatomy-source/experiments/smart-anatomy-v2-chest-deltoid/. site/anatomy/
+
       - name: Validate recovery preview contract
         uses: actions/setup-node@v4
         with:
