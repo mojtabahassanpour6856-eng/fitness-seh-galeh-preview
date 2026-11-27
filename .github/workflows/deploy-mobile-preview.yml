@@ -29,18 +29,22 @@ jobs:
           path: site
           persist-credentials: false
 
-      - name: Checkout anatomy prototype source
+      - name: Checkout MuscleMap anatomy integration source
         uses: actions/checkout@v4
         with:
           repository: mojtabahassanpour6856-eng/fitness-seh-galeh-test
-          ref: experiment/anatomy-v2-chest-deltoid-preview-20261127
+          ref: experiment/musclemap-integration-20261127
           path: anatomy-source
           persist-credentials: false
 
-      - name: Add anatomy preview without changing the existing preview
+      - name: Add MuscleMap anatomy preview without changing the existing preview
         run: |
           mkdir -p site/anatomy
-          cp -R anatomy-source/experiments/smart-anatomy-v2-chest-deltoid/. site/anatomy/
+          cp -R anatomy-source/experiments/musclemap-integration/. site/anatomy/
+          node --check anatomy-source/experiments/musclemap-integration/app.js
+          node -e "const d=require('./anatomy-source/experiments/musclemap-integration/assets/diagrams.json'); for (const n of ['male-front','male-back','female-front','female-back']) { if (!d[n] || !d[n].muscles.length) throw new Error('missing '+n); } console.log('MuscleMap anatomy data validated');"
+          test -s site/anatomy/assets/male-front.webp.b64
+          test -s site/anatomy/assets/male-back.webp.b64
 
       - name: Validate recovery preview contract
         uses: actions/setup-node@v4
