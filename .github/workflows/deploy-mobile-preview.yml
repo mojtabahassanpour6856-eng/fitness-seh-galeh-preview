@@ -37,19 +37,22 @@ jobs:
           path: anatomy-source
           persist-credentials: false
 
+      - name: Set up Node for anatomy validation
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
       - name: Add MuscleMap anatomy preview without changing the existing preview
         run: |
           mkdir -p site/anatomy
           cp -R anatomy-source/experiments/musclemap-integration/. site/anatomy/
           node --check anatomy-source/experiments/musclemap-integration/app.js
-          node -e "const d=require('./anatomy-source/experiments/musclemap-integration/assets/diagrams.json'); for (const n of ['male-front','male-back','female-front','female-back']) { if (!d[n] || !d[n].muscles.length) throw new Error('missing '+n); } console.log('MuscleMap anatomy data validated');"
+          node -e "const fs=require('fs'); const base='./anatomy-source/experiments/musclemap-integration/assets/'; const d=require(base+'diagrams.json'); for (const n of ['male-front','male-back','female-front','female-back']) { const x=d[n]; if (!x || !x.muscles.length || !x.outline.length || !x.viewBox) throw new Error('invalid diagram '+n); if (x.muscles.some(m=>!m.id||!m.group||!m.d)) throw new Error('invalid muscle path '+n); const b=fs.readFileSync(base+n+'.webp.b64','utf8').trim(); const img=Buffer.from(b,'base64'); if (img.length<1000 || img.toString('ascii',8,12)!=='WEBP') throw new Error('invalid WebP '+n); console.log(n+' '+x.muscles.length+' muscle paths; WebP '+img.length+' bytes'); }"
           test -s site/anatomy/assets/male-front.webp.b64
           test -s site/anatomy/assets/male-back.webp.b64
 
       - name: Validate recovery preview contract
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
+        run: test -f site/tests/auth-recovery-preview-static.test.mjs
 
       - name: Run static safety test
         working-directory: site
