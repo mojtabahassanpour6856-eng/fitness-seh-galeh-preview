@@ -42,7 +42,7 @@ jobs:
         with:
           node-version: 22
 
-      - name: Add MuscleMap anatomy preview without changing the existing preview
+      - name: Add and validate the latest MuscleMap anatomy preview without changing the existing preview
         run: |
           mkdir -p site/anatomy
           cp -R anatomy-source/experiments/musclemap-integration/. site/anatomy/
